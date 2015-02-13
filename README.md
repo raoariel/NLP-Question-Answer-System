@@ -21,8 +21,8 @@ Answering
 ----------------------------------
 Figuring out what type of question (yes/no, location, date, etc) is being asked will be useful for determining which relationships between words we should be considering. 
 Parsing sentences into phrases and then deciding the functionality of the phrase will be useful for answering questions based on types. For example, a prepositional phrase that describes location will be useful for answering a location question while maintaining proper grammar.
-	If information or relationships in the article are successfully extracted, then this information will be delivered as the answer. Otherwise we will retrieve the most likely sentence, treating the keywords of the question as a vector that we are trying to match, and extract the most salient section of this retrieved sentence as the answer. We will likely use term frequency to rank sentences within a document.
-	Both the asking and answering modules will share the structured data extracted from parsing text and use wrappers over useful NLP algorithms from NLTK/other libraries. Otherwise the two components’ system designs will be independent.
+If information or relationships in the article are successfully extracted, then this information will be delivered as the answer. Otherwise we will retrieve the most likely sentence, treating the keywords of the question as a vector that we are trying to match, and extract the most salient section of this retrieved sentence as the answer. We will likely use term frequency to rank sentences within a document.
+Both the asking and answering modules will share the structured data extracted from parsing text and use wrappers over useful NLP algorithms from NLTK/other libraries. Otherwise the two components’ system designs will be independent.
 
 Evaluation 
 ----------------------------------
@@ -30,7 +30,7 @@ We will be automatically evaluating each question generated for grammar and synt
 
 Team Coordination
 ----------------------------------
-	Our team will be using Git for version control and to share code/data. Because our group is divided among people with a background in programming vs. experience with linguistics, we will be dividing tasks accordingly. One of our team expectations by the first progress report will be to have a full “skeleton” of the functional system, and we will then assign specific coding tasks accordingly. We also have a standing weekly meeting (Thursdays) to delineate tasks and manage our progress.
+Our team will be using Git for version control and to share code/data. Because our group is divided among people with a background in programming vs. experience with linguistics, we will be dividing tasks accordingly. One of our team expectations by the first progress report will be to have a full “skeleton” of the functional system, and we will then assign specific coding tasks accordingly. We also have a standing weekly meeting (Thursdays) to delineate tasks and manage our progress.
 	
 Team: Tune a Fish
 ----------------------------------
