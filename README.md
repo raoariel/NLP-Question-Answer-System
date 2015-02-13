@@ -25,3 +25,6 @@ We will be automatically evaluating each question generated for grammar and synt
 Team Coordination
 ----------------------------------
 	Our team will be using Git for version control and to share code/data. Because our group is divided among people with a background in programming vs. experience with linguistics, we will be dividing tasks accordingly. One of our team expectations by the first progress report will be to have a full “skeleton” of the functional system, and we will then assign specific coding tasks accordingly. We also have a standing weekly meeting (Thursdays) to delineate tasks and manage our progress.
+	
+
+----------------------------------
