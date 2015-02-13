@@ -1,6 +1,12 @@
 # NLP-Question-Answer-System
-Initial Plan for 11-411 Final Project
-Team Tune A Fish: Emily Bram, Caitlin Lohman, Ariel Rao, Vijay Viswanathan
+####Initial Plan for 11-411 Final Project
+
+Week 1 Plans
+---------------------------------
+* Vijay: Question generation using templating
+* Caitlin: Research useful capabilities of NLTK/Stanford, write code to parse text in basic ways
+* Ariel: Entity-factoid database
+* Emily: Answer generation
 
 Parsing the Text
 ----------------------------------
@@ -26,5 +32,11 @@ Team Coordination
 ----------------------------------
 	Our team will be using Git for version control and to share code/data. Because our group is divided among people with a background in programming vs. experience with linguistics, we will be dividing tasks accordingly. One of our team expectations by the first progress report will be to have a full “skeleton” of the functional system, and we will then assign specific coding tasks accordingly. We also have a standing weekly meeting (Thursdays) to delineate tasks and manage our progress.
 	
-
+Team: Tune a Fish
 ----------------------------------
+```
+Emily Bram
+Caitlin Lohman
+Ariel Rao
+Vijay Viswanathan
+```
