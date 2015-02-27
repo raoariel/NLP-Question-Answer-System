@@ -1,6 +1,20 @@
 # NLP-Question-Answer-System
 ####Initial Plan for 11-411 Final Project
 
+Week 4 Plans
+---------------------------------
+* Continue to make progress
+* Prepare for Progress Report 2 (video)
+
+Week 2 Plans 
+---------------------------------
+* Vijay: Question Templates
+* Caitlin/Emily: Pronoun Resolution
+* Ariel: Entity-Factoid Database (consider issues with synonyms)
+
+* Reminder: Submit Progress Report 1
+* March 4: Instructor Meeting
+
 Week 1 Plans
 ---------------------------------
 * Vijay: Question generation using templating
