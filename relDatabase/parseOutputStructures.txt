@@ -1,0 +1,37 @@
+Parse Output Structures
+
+{'coref': 
+[[[['the president of the US', 0, 3, 2, 7], ['Lincoln', 0, 0, 0, 1]]]], 
+
+
+'sentences': 
+[{'parsetree': '(ROOT (S (NP (NNP Lincoln)) (VP (VBZ is) (NP (NP (DT the) (NN president)) (PP (IN of) (NP (DT the) (NNP US))))) (. .)))', 
+
+'text': 
+'Lincoln is the president of the US.', 
+
+'dependencies': [['root', 'ROOT', 'president'], ['nsubj', 'president', 'Lincoln'], ['cop', 'president', 'is'], ['det', 'president', 'the'], ['det', 'US', 'the'], ['prep_of', 'president', 'US']], 
+
+'words': [['Lincoln', 
+			{'NamedEntityTag': 'PERSON', 'CharacterOffsetEnd': '7', 'CharacterOffsetBegin': '0', 'PartOfSpeech': 'NNP', 'Lemma': 'Lincoln'}], 
+
+			['is', 
+			{'NamedEntityTag': 'O', 'CharacterOffsetEnd': '10', 'CharacterOffsetBegin': '8', 'PartOfSpeech': 'VBZ', 'Lemma': 'be'}], 
+
+			['the', 
+			{'NamedEntityTag': 'O', 'CharacterOffsetEnd': '14', 'CharacterOffsetBegin': '11', 'PartOfSpeech': 'DT', 'Lemma': 'the'}], 
+
+			['president', 
+			{'NamedEntityTag': 'O', 'CharacterOffsetEnd': '24', 'CharacterOffsetBegin': '15', 'PartOfSpeech': 'NN', 'Lemma': 'president'}], 
+
+			['of', 
+			{'NamedEntityTag': 'O', 'CharacterOffsetEnd': '27', 'CharacterOffsetBegin': '25', 'PartOfSpeech': 'IN', 'Lemma': 'of'}], 
+
+			['the', 
+			{'NamedEntityTag': 'O', 'CharacterOffsetEnd': '31', 'CharacterOffsetBegin': '28', 'PartOfSpeech': 'DT', 'Lemma': 'the'}], 
+
+			['US', 
+
+			{'NamedEntityTag': 'LOCATION', 'CharacterOffsetEnd': '34', 'CharacterOffsetBegin': '32', 'PartOfSpeech': 'NNP', 'Lemma': 'US'}], 
+
+			['.', {'NamedEntityTag': 'O', 'CharacterOffsetEnd': '35', 'CharacterOffsetBegin': '34', 'PartOfSpeech': '.', 'Lemma': '.'}]]}]}
