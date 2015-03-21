@@ -112,8 +112,6 @@ class Parse(object):
             self.getContent()
         return (selectedPhrase,rawSentence)
 
-
-
     def decomposePhrase(self):
         """Use parse tree to extract noun phrase and verb phrase."""
         while (type(phrase) == list) and (phase[1][0] != 'NP'):
@@ -149,17 +147,5 @@ class Parse(object):
             
         #return (selectedPhrase,rawSentence)
         return self.selectLine()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
