@@ -1,5 +1,5 @@
 # Load in dependancies
-import os, sys, re, string, ast, json, yaml
+import os, sys, re, string, ast, json
 from  nltk import *
 from corenlp import *
 from random import randint
