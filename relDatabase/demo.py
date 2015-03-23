@@ -5,8 +5,10 @@
 
 from parseNLP import Parse
 
+# required parameter: fileName ("*.htm")
 # optional parameters: textRange (int: size of text block to chuck in
 #                      dataDir (str: directory of data relative to current folder (ie coreNLP))
+#                                    - see code for current default
 file = Parse("languages_a1.htm")
 
 # returns nested list of parse tree and raw string as tuple

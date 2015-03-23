@@ -29,9 +29,13 @@ class Parse(object):
 
     def readFile(self):
         """Load in html file and extract raw text."""
-        html = BeautifulSoup(open(self.dataDir+self.fileName))
-        self.raw = html.get_text()
-        return 
+        try:
+          html = BeautifulSoup(open(self.dataDir+self.fileName))
+          self.raw = html.get_text()
+        except: 
+          raise Exception("Could not read file. Check that the file name and directory are correct. " + 
+                          "The file extension should be .htm.")
+        return
 
     def tokenize(self):
         """Tokenize raw text to prepare for parsing."""
@@ -39,7 +43,7 @@ class Parse(object):
           misc = self.raw.index("See also")
           self.raw = self.raw[:misc]
         except:
-          pass
+          pass # Not all article have Misc section
         self.text = tokenize.sent_tokenize(self.raw)
         self.textLen = len(self.text)
         return
@@ -59,7 +63,7 @@ class Parse(object):
 
     def getTopicSentence(self,topicNE):
         """Select a sentence with a given named entity."""
-        self.topicInd = -1 #get sentence with topic in it
+        self.topicInd = -1 # get sentence with topic in it
         ind = 0
         while (self.topicInd < 0):
             try:
@@ -68,7 +72,7 @@ class Parse(object):
                    self.topicInd = ind
                 else: ind += 1
             except:
-                pass
+                pass # Not all 'sentences' have same structure. is okay.
         return
 
     def treeToList(self,parseTree):
