@@ -1,6 +1,19 @@
 # NLP-Question-Answer-System
 ####Initial Plan for 11-411 Final Project
 
+Week 8 Plans
+---------------------------------
+* Put together basic working system
+* Complete simple tests on raw data (html files and our own questions)
+
+Week 7 Plans
+---------------------------------
+* Ariel: Parse raw text for question generation
+* Vijay: Question generation template filling
+* Caitlin: Yes/No question answering
+* Emily: Factoid question answering
+* Reminder: Progress Report 2 Due (video)
+
 Week 4 Plans
 ---------------------------------
 * Continue to make progress
@@ -11,7 +24,6 @@ Week 2 Plans
 * Vijay: Question Templates
 * Caitlin/Emily: Pronoun Resolution
 * Ariel: Entity-Factoid Database (consider issues with synonyms)
-
 * Reminder: Submit Progress Report 1
 * March 4: Instructor Meeting
 
