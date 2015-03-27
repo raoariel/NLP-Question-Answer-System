@@ -11,11 +11,12 @@ debug = False
 
 class Parse(object):
     # textRange 15
-    def __init__(self,fileName,dataDir='../NLP-Question-Answer-System/sampleData/',textRange=5):
-        """Parse(fileName,dataDir='../NLP-Question-Answer-System/sampleData/',textRange=5)"""
+    def __init__(self,fileName,dataDir='../NLP-Question-Answer-System/sampleData/languages/',textRange=5,ignoreUnicode=True):
+        """Parse(fileName,dataDir='../NLP-Question-Answer-System/sampleData/languages/',textRange=5)"""
         self.fileName = fileName
         self.dataDir = dataDir
         self.textRange = textRange+1 # lines of text to search over, +1 for range offset
+        self.ignoreUnicode = ignoreUnicode
         print("Reading file..."),
         self.readFile()
         print("OK!")
@@ -32,10 +33,10 @@ class Parse(object):
         try:
           html = BeautifulSoup(open(self.dataDir+self.fileName))
           self.raw = html.get_text()
-        except: 
-          raise Exception("Could not read file. Check that the file name and directory are correct. " + 
+        except:
+          raise Exception("Could not read file. Check that the file name and directory are correct. " +
                           "The file extension should be .htm.")
-        return
+        return 
 
     def tokenize(self):
         """Tokenize raw text to prepare for parsing."""
@@ -43,7 +44,7 @@ class Parse(object):
           misc = self.raw.index("See also")
           self.raw = self.raw[:misc]
         except:
-          pass # Not all article have Misc section
+          pass
         self.text = tokenize.sent_tokenize(self.raw)
         self.textLen = len(self.text)
         return
@@ -63,7 +64,7 @@ class Parse(object):
 
     def getTopicSentence(self,topicNE):
         """Select a sentence with a given named entity."""
-        self.topicInd = -1 # get sentence with topic in it
+        self.topicInd = -1 #get sentence with topic in it
         ind = 0
         while (self.topicInd < 0):
             try:
@@ -72,7 +73,7 @@ class Parse(object):
                    self.topicInd = ind
                 else: ind += 1
             except:
-                pass # Not all 'sentences' have same structure. is okay.
+                ind += 1
         return
 
     def treeToList(self,parseTree):
@@ -98,14 +99,18 @@ class Parse(object):
         while ((not lineFound) and (attempts < 5)):
             topicNE = mostCommonNE[randint(0,topNE-1)]
             print topicNE
+            print "here"
             self.getTopicSentence(topicNE)
+            print "not here"
             try:
                 parseTree = self.parsedText[self.topicInd]['sentences'][0]['parsetree']
                 rawSentence = self.parsedText[self.topicInd]['sentences'][0]['text']
             except:
                 raise Exception ("Invalid parse. Could not decode results.")
+            print "at A"
             self.parseTree = self.treeToList(parseTree)
             selectedPhrase = self.parseTree[1] # ROOT extracted
+            print "at B"
             #print selectedPhrase
             #print rawSentence
             if len(rawSentence.split()) > 6:
@@ -114,15 +119,12 @@ class Parse(object):
         if (attempts > 5):
             print "Timeout finding line with good content. Trying new block..."
             self.getContent()
-        return (selectedPhrase,rawSentence)
-
-    def decomposePhrase(self):
-        """Use parse tree to extract noun phrase and verb phrase."""
-        while (type(phrase) == list) and (phase[1][0] != 'NP'):
-                phrase = phrase[1]
-        print(phrase[1],phrase[3])
-        #FINISH LATER IF NEEDED
-        return
+        print rawSentence
+        if ((unicode("&#") in rawSentence) and self.ignoreUnicode):
+            print "Sentence had non-ascii. Ignoring..."
+            self.getContent()    
+        self.result = (selectedPhrase,rawSentence)        
+        return 
 
     def getContent(self):
         """Return sentence and corresponding parse tree with important content."""
@@ -145,11 +147,19 @@ class Parse(object):
             else: raise Exception ("Invalid encoding for text file.")
 
         print "Block Complete."
-        # #(phraseNP,phraseVP) = self.decomposePhrase()
-        # #return raw line with parse, NP pharse, VP phrase
-        # #return (phrase,rawSentence,phraseNP,phraseVP)
-            
-        #return (selectedPhrase,rawSentence)
-        return self.selectLine()
+        self.selectLine()
+        return self.result
+
+
+
+
+
+
+
+
+
+
+
+
 
 
