@@ -95,22 +95,32 @@ class Parse(object):
         uniqueNE = len(list(self.NEcounts))
         topNE = uniqueNE // 4
         mostCommonNE = [k for (k,v) in self.NEcounts.most_common(topNE)]
+        topicNE = None
         
         while ((not lineFound) and (attempts < 5)):
-            topicNE = mostCommonNE[randint(0,topNE-1)]
-            print topicNE
-            print "here"
+            while (topicNE == None):
+                try:
+                    topicNE = mostCommonNE[randint(0,max(topNE-1,1))]
+                except: pass
+            #print topicNE
+            #print "here"
             self.getTopicSentence(topicNE)
-            print "not here"
+            #print "not here"
             try:
                 parseTree = self.parsedText[self.topicInd]['sentences'][0]['parsetree']
                 rawSentence = self.parsedText[self.topicInd]['sentences'][0]['text']
             except:
                 raise Exception ("Invalid parse. Could not decode results.")
-            print "at A"
+            #print "at A"
             self.parseTree = self.treeToList(parseTree)
             selectedPhrase = self.parseTree[1] # ROOT extracted
-            print "at B"
+            # try:
+            #     if selectedPhrase[0] == 'FRAG':
+            #         print("This is a fragment. Ignoring...")
+            #         self.getContent()    
+            # except: pass
+
+            #print "at B"
             #print selectedPhrase
             #print rawSentence
             if len(rawSentence.split()) > 6:
@@ -119,11 +129,12 @@ class Parse(object):
         if (attempts > 5):
             print "Timeout finding line with good content. Trying new block..."
             self.getContent()
-        print rawSentence
+        #print rawSentence
         if ((unicode("&#") in rawSentence) and self.ignoreUnicode):
             print "Sentence had non-ascii. Ignoring..."
             self.getContent()    
-        self.result = (selectedPhrase,rawSentence)        
+        self.result = (selectedPhrase,rawSentence)  
+
         return 
 
     def getContent(self):
@@ -149,17 +160,3 @@ class Parse(object):
         print "Block Complete."
         self.selectLine()
         return self.result
-
-
-
-
-
-
-
-
-
-
-
-
-
-
