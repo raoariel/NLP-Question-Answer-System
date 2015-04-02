@@ -1,6 +1,10 @@
 # NLP-Question-Answer-System
 ####Initial Plan for 11-411 Final Project
 
+Week 9 Plans
+---------------------------------
+* Reminder: Prepare for Dry Run
+
 Week 8 Plans
 ---------------------------------
 * Put together basic working system
