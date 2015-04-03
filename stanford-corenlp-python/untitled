@@ -1,0 +1,123 @@
+import os, sys, re, string, ast, json, yaml
+import convert
+from  nltk import *
+from corenlp import *
+from random import randint
+from bs4 import BeautifulSoup
+from collections import Counter
+
+debug = False
+
+class Parse(object):
+	def __init__(self,fileName,textRange=15):
+		self.fileName = fileName
+		self.range = textRange+1 # lines of text to search over, +1 for range offset
+		readFile()
+		tokenize()
+		self.corenlp = StanfordCoreNLP()
+		parse()
+		return
+
+	def readFile(self):
+		dataDir = '../NLP-Question-Answer-System/sampleData/'
+		htmlFile = self.fileName
+		html = BeautifulSoup(open(dataDir+htmlFile))
+		self.raw = html.get_text()
+		return 
+
+	def tokenize(self):
+		try: 
+		  misc = self.raw.index("See also")
+		  self.raw = self.raw[:misc]
+		except:
+		  pass
+		self.text = tokenize.sent_tokenize(self.raw)
+		return
+
+
+
+	def parse(self):
+		self.parsedText = []
+		for line in self.text:
+			self.parsedText.append(json.load(self.corenlp.parse(line)))
+		self.textLen = len(self.parsedText)
+		return		
+
+	def getNERCounts(self,line): pass
+		sentence = line['sentences'][0]['words']
+  		for token in sentence:
+  			word = token[0]
+  			info = token[1]
+  			if info['NamedEntityTag'] != 'O':
+  				self.NEcounts[word] += 1
+   		return
+
+   	def getTopicSentence(self,topicNE,startInd):
+   		self.topicInd = -1 #get sentence with topic in it
+   		ind = startInd
+   		while (self.topicInd < 0):
+   			if topicNE in self.text[ind]:
+   				self.topicInd = ind
+   			else: ind += 1
+   		return
+
+   	def treeToList(self,parseTree):
+		validChar = string.ascii_letters + string.digits + "() "
+		removeInvalidChar = all.translate(string.maketrans('',''), validChar)
+		parseTree = parseTree.translate(all, removeInvalidChar)
+		parseTree = parseTree.replace('(', '[')
+		parseTree = parseTree.replace(')', ']')
+		parseTree = parseTree.replace('] [', '], [')
+		parseTree = parseTree.replace('[]', '')
+		parseTree = re.sub(r'(\w+)', r'"\1",', parseTree)
+		return ast.literal_eval(parseTree)
+
+	def decomposePhrase(self):
+		while (type(phrase) == list) and (phase[1][0] != 'NP'):
+				phrase = phrase[1]
+			print(phrase[1],phrase[3])
+		#FINISH LATER IF NEEDED
+		return
+
+	def getContent(self,line):
+		# assumption, python PRNG goodish
+		#assumption, something worthwhile ever 15 sentences
+		lineFound = false
+		startInd = randint(0,self.textLen-self.textRange)
+		self.NEcounts = Counter()
+		for lineInd in xrange(startInd,startInd+self.textRange):
+			getNECounts(self.parsedText[lineInd])
+		uniqueNE = len(list(self.NEcounts))
+		topNE = uniqueNE // 4
+		mostCommonNE = [k for (k,v) in Counter(words).most_common(topNE)]
+		
+		while not lineFound:
+			topicNE = mostCommonNE[randint(0,topNE)]
+			getTopicSentence(self,topicNE,startInd)
+			parseTree = self.parsedText[self.topicInd]['sentences'][0]['parsetree']
+			rawSentence = self.parsedText[self.topicInd]['sentences'][0]['text']
+			self.parseTree = convert.treeToList(self,parseTree)
+			phrase = self.parseTree[1]
+			if len(rawSentence) > 6:
+				lineFound = True
+			
+		#(phraseNP,phraseVP) = decomposePhrase(self)
+		#return raw line with parse, NP pharse, VP phrase
+		#return (phrase,rawSentence,phraseNP,phraseVP)
+		return (phrase,rawSentence)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
