@@ -1,6 +1,3 @@
-# VERSION 2
-# NOTE: Changes in output, dictionary not tuple
-
 # Load in dependancies
 import os, sys, re, string, ast, json
 from  nltk import *
@@ -11,14 +8,6 @@ from collections import Counter
 
 debug = False
 # non deterministically find important content
-
-# class NLP(object):
-#     def __init__(self):
-#         self.corenlp = StanfordCoreNLP()
-#         return
-
-#     def start(self):
-#         return self.corenlp
 
 class Parse(object):
     # textRange 15
@@ -69,8 +58,6 @@ class Parse(object):
                 info = token[1]
                 if info['NamedEntityTag'] != 'O':
                     self.NEcounts[word] += 1
-                    if word not in self.wordNE:
-                        self.wordNE[word] = info['NamedEntityTag']
         except:
             raise Exception ("Failed coreNLP parse. \n Text: ", line)
         return
@@ -92,7 +79,7 @@ class Parse(object):
     def treeToList(self,parseTree):
         """Convert parse tree from string to nested array"""
         validChar = string.ascii_letters + string.digits + "() "
-        filterChars = (lambda x: ((x in string.punctuation) or
+        filterChars = (lambda x: ((x not in string.punctuation) or
                                   (x not in string.punctuation) or 
                                   (x in "() ")))
         parseTree = ''.join(filter(filterChars, parseTree))
@@ -101,50 +88,55 @@ class Parse(object):
         parseTree = parseTree.replace('] [', '], [')
         parseTree = parseTree.replace('[]', '')
         parseTree = re.sub(r'(\w+)', r'"\1",', parseTree)
-        # punctuation edge cases. may be more not fully tested
-        parseTree = parseTree.replace('[. .]', '["."]')
-        parseTree = parseTree.replace('[, ,]', '[","]')
-        parseTree = parseTree.replace('[: ;]', '[": ;"]')
-        parseTree = parseTree.replace('[`` ``]', '["`` ``"]')
-        parseTree = parseTree.replace('['' '']', '["'' ''"]')
-        try:
-            return ast.literal_eval(parseTree)
-        except:
-            return []
-
+        return ast.literal_eval(parseTree)
+    
     def selectLine(self):
         (lineFound,attempts) = (False,0)
         uniqueNE = len(list(self.NEcounts))
-        topNE = max(uniqueNE // 4, 1)
+        topNE = uniqueNE // 4
         mostCommonNE = [k for (k,v) in self.NEcounts.most_common(topNE)]
         topicNE = None
-        selectedPhrase = ""
         
         while ((not lineFound) and (attempts < 5)):
             while (topicNE == None):
                 try:
                     topicNE = mostCommonNE[randint(0,max(topNE-1,1))]
-                except: 
-                    print "This sentence has no named entities. Trying new block.."
-                    return self.getContent()
+                except: pass
+            #print topicNE
+            #print "here"
             self.getTopicSentence(topicNE)
+            #print "not here"
             try:
                 parseTree = self.parsedText[self.topicInd]['sentences'][0]['parsetree']
                 rawSentence = self.parsedText[self.topicInd]['sentences'][0]['text']
             except:
                 raise Exception ("Invalid parse. Could not decode results.")
+            #print "at A"
             self.parseTree = self.treeToList(parseTree)
-            if self.parseTree != []:
-                selectedPhrase = self.parseTree[1] # ROOT extracted
-                if len(rawSentence.split()) > 6:
-                    lineFound = True
+            selectedPhrase = self.parseTree[1] # ROOT extracted
+            # try:
+            #     if selectedPhrase[0] == 'FRAG':
+            #         print("This is a fragment. Ignoring...")
+            #         self.getContent()    
+            # except: pass
+
+            #print "at B"
+            #print selectedPhrase
+            #print rawSentence
+            if len(rawSentence.split()) > 6:
+                lineFound = True
             attempts += 1
-        if ((attempts > 5) or (selectedPhrase == "")):
+        if (attempts > 5):
             print "Timeout finding line with good content. Trying new block..."
             self.getContent()
-        self.resultSent = (selectedPhrase,rawSentence)  
+        #print rawSentence
+        if ((unicode("&#") in rawSentence) and self.ignoreUnicode):
+            print "Sentence had non-ascii. Ignoring..."
+            self.getContent()    
+        self.result = (selectedPhrase,rawSentence)  
+
         return 
-   
+
     def getContent(self):
         """Return sentence and corresponding parse tree with important content."""
         # Assumption: python PRNG goodish
@@ -152,28 +144,19 @@ class Parse(object):
         startInd = randint(0,self.textLen-self.textRange)
         self.parsedText = []
         self.NEcounts = Counter()
-        self.wordNE = dict()
         print ("Parsing lines: "),
         for lineInd in xrange(startInd,startInd+self.textRange):
             print lineInd,
             line = self.text[lineInd]
             if isinstance(line, unicode):
+                strLine = line.encode('ascii', 'xmlcharrefreplace')
                 try: 
-                    parsedLine = self.corenlp.parse(line)
-                    lineToLoad = unicode(parsedLine, 'utf-8')
-                    res = json.loads(lineToLoad)
+                    res = json.loads(self.corenlp.parse(strLine))
                     self.parsedText.append(res)
                     self.getNECounts(res['sentences'])
-                except: 
-                    # return parsedLine, lineToLoad, line
-                    # raise Exception ("Json encoding error.")
-                    pass # is not real sentence
+                except: pass
             else: raise Exception ("Invalid encoding for text file.")
+
         print "Block Complete."
         self.selectLine()
-        self.results = dict()
-        self.results["parsedSentence"] = self.resultSent[0]
-        self.results["rawSentence"] = self.resultSent[1]
-        self.results["wordNE"] = self.wordNE
-        return self.results
-
+        return self.result

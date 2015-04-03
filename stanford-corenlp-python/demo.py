@@ -1,31 +1,18 @@
-# Note to self: MUST deal with non-ascii; too limiting in content and time consuming to restart search each time
-# Note to self: CAN find way to clean up raw input and optimize for given htmls
-#              currently removing index but should also remove charts, examples, etc.
-
-
-
-
-# Demo for parse & extract modules
+# Demo for parse & extract modules VERSION 2
 # Dependencies: 
 #   convert.py  parseNLP.py  extractNLP.py
 #   os, sys, re, string, ast, json 
 #   nltk, corenlp, random, bs4, collections
 
+
 from parseNLP import Parse
 from extractNLP import Extract
 
-file = Parse("languages_a1.htm")
+file = Parse("languages_a5.htm")
+file_lang_5 = file.getContent()
+# {'wordNE': {u'Brown': u'PERSON', u'Okrand': u'PERSON', u'Marc': u'PERSON', u'daily': u'SET', u'CBS': u'ORGANIZATION', u'3000': u'NUMBER', u'Jonathan': u'PERSON', u'first': u'ORDINAL'}, 'rawSentence': u'The language is displayed in both Latin and pIqaD fonts, making this the first language course written in pIqaD and approved by CBS and Marc Okrand.', 'parsedSentence': ['S', ['NP', ['DT', 'The'], ['NN', 'language']], ['VP', ['VBZ', 'is'], ['VP', ['VBN', 'displayed'], ['PP', ['IN', 'in'], ['NP', ['CC', 'both'], ['NP', ['JJ', 'Latin']], ['CC', 'and'], ['NP', ['NN', 'pIqaD'], ['NNS', 'fonts']]]], [','], ['S', ['VP', ['VBG', 'making'], ['S', ['NP', ['DT', 'this']], ['NP', ['NP', ['DT', 'the'], ['JJ', 'first'], ['NN', 'language'], ['NN', 'course']], ['VP', ['VP', ['VBN', 'written'], ['PP', ['IN', 'in'], ['NP', ['NN', 'pIqaD']]]], ['CC', 'and'], ['VP', ['VBN', 'approved'], ['PP', ['IN', 'by'], ['NP', ['NNP', 'CBS'], ['CC', 'and'], ['NNP', 'Marc'], ['NNP', 'Okrand']]]]]]]]]]], ['.']]}
 
-parsed = file.getContent()
-# tuple of parse tree as list and raw string
-# Example:
-# (['S', ['NP', ['DT', 'The'], ['NN', 'palace']], ['VP', ['VBD', 'was'], ['NP', ['NP', ['DT', 'an'], ['NN', 'act']], ['PP', ['IN', 'of'], ['NP', ['NN', 'charity']]]], ['PP', ['IN', 'by'], ['NP', ['NP', ['DT', 'the'], ['NNP', 'Sultan']], ['SBAR', ['WHNP', ['WP', 'who']], ['S', ['VP', ['VBD', 'wanted'], ['S', ['VP', ['TO', 'to'], ['VP', ['VB', 'help'], ['NP', ['DT', 'the'], ['JJ', 'poor']], ['PP', ['IN', 'in'], ['NP', ['NP', ['DT', 'the'], ['JJ', 'neighbouring'], ['NNS', 'areas']], ['PP', ['IN', 'of'], ['NP', ['NNP', 'Pune']]], [], ['SBAR', ['WHNP', ['WP', 'who']], ['S', ['VP', ['VBD', 'were'], ['ADVP', ['RB', 'drastically']], ['VP', ['VBN', 'hit'], ['PP', ['IN', 'by'], ['NP', ['NN', 'famine']]]]]]]]]]]]]]]]]], []], u'The palace was an act of charity by the Sultan who wanted to help the poor in the neighbouring areas of Pune, who were drastically hit by famine.')
 
-phrases = Extract(parsed)
-
-phraseDict = phrases.getText()   
-# dictionary with (key: POS tag, value: raw string associated)
-# Example: 
-# {'NP': ['The palace '], 'VP': ['was  an act of charity by  the Sultan  who  wanted  to help the poor in  the neighbouring areas of Pune  who  were drastically hit by famine ']}
-# NOTE: OUTPUT MAY BE NONE: INPUT IS A FRAGMENT NOT SENTENCE: NEED TO GET NEW SENTENCE
-# I should handle it for you but check in case...
+phrase = Extract(file_lang_5)
+res = phrase.getText()
+# {'NP': ['The language '], 'VP': ['is displayed in both Latin and pIqaD fonts  making  this  the first language course  written in pIqaD and approved by CBS and Marc Okrand '], '.': ['']}

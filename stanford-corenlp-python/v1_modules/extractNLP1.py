@@ -1,14 +1,18 @@
-## VERSION 2
-## Note: Changes in input, takes dictionary output py Parse module
-
+# REQUIRES: input is Parse List
 
 class Extract(object):
 	def __init__(self,parse,level=1):
 		"""Extracts phrase strings from list at the given level is the parse tree. If provided level is invalid, will return phrases of highest order.
 		If no phrase exists, will return None type."""
-		self.parseList = parse["parsedSentence"]
-		self.raw = parse["rawSentence"]
+		(self.parseList,self.raw) = parse
 		self.level = level
+		# self.getText()
+		# if ((self.text == None) and self.level > 1):
+		# 	print("No phrases at level %d, retrieving for level 1...", level)
+		# 	self.level = 1
+		# 	self.getText()
+		# if (self.text == None):
+		# 	print("No phrases in sentence.")
 		return 
 
 	def getString(self,subParse,acc): 
@@ -36,7 +40,7 @@ class Extract(object):
 		# # Removes 'S' tag and [] end of line
 		self.results = dict()
 		innerList = []
-		for stree in self.parseList[1:]:
+		for stree in self.parseList[1:-1]:
 			try:
 				if (stree[0] == 'S'):
 					innerList += stree[1:]
