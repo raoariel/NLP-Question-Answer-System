@@ -10,8 +10,9 @@
     Python Dependencies:
         Basic: os, sys, ast, 
                re, string, random, 
-               json, yaml, collections
-        Additional: nltk, corenlp, bs4
+               collections
+        Additional: json, yaml, pattern,
+                    nltk, corenlp, bs4
 
 |===============================================|
 
