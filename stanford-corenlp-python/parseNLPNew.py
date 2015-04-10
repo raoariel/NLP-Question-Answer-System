@@ -18,7 +18,6 @@ class Parse(object):
     self.tokenize()
     self.corenlp = StanfordCoreNLP()
     self.getMain()
-    print self.topic
     self.rem = []
     return
 
@@ -108,7 +107,7 @@ class Extract(object):
       self.parseList = parse["parse"]
       self.raw = parse["raw"]
     except: 
-      print parse
+      pass
     return 
 
   def getAllSub(self,l):
@@ -128,11 +127,14 @@ class Extract(object):
 
   def getString(self,l):
     s = ''
-    if type(l[1]) == list:
-      for x in l[1:]:
-        s += self.getString(x)
-    else:
-      s += l[1] + " "
+    try:
+      if type(l[1]) == list:
+        for x in l[1:]:
+          s += self.getString(x)
+      else:
+        if l[0] != l[1]:
+          s += l[1] + " "
+    except: pass
     return s
 
   def getPhrases(self):
@@ -146,5 +148,7 @@ class Extract(object):
         res[pos].append(phrase)
       else:
         res[pos] = [phrase]
+    for key in res:
+      res[key].sort(key = lambda s: len(s))
     return res
 
