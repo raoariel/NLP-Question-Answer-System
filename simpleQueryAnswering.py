@@ -122,10 +122,7 @@ for question in questions:
         if searchstring in sentence:
             startidx = sentence.index(target[0])
             endidx = sentence.index(target[-1])
-            if len(sentence[:startidx]) > len(sentence[endidx:]):
-                answer = sentence[:startidx]
-            else:
-                answer = sentence[endidx:]
+            answer = sentence[:startidx]
             done = True
     
         # Check if solution is found
