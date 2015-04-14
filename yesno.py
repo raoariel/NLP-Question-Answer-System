@@ -3,6 +3,7 @@ import nltk.data
 import nltk
 
 def answeryesno(article, question):
+    prev = "no"
     questionstr = ' '.join(question)
     questionstr = questionstr.lower()
     question = nltk.pos_tag(question)
@@ -25,14 +26,23 @@ def answeryesno(article, question):
                     break
                 if (pos != '.') and (word.lower() not in s) and (pos != 'DT') and (word != 'does') and (word != 'do'):
                     answer = 'no'                    
+                    #print word, pos
                     if pos[0] == 'V':
                         tempword = nltk.stem.wordnet.WordNetLemmatizer().lemmatize(word,'v')                       
                         for (w,p) in nltk.pos_tag(s):
                             if p[0] == 'V':
-                                if tempword == nltk.stem.wordnet.WordNetLemmatizer().lemmatize(w,'v'):
+                                tempword2 = nltk.stem.wordnet.WordNetLemmatizer().lemmatize(w,'v')
+                                if tempword == tempword2:
                                     answer = 'yes'
                     elif word in article[0]:                       
                         answer = "yes" 
+                if prev == "yes":
+                    if (word == "no" or word =="not"):
+                        answer = "no"
+                if pos[0] == 'V':
+                    prev = "yes"
+                else:
+                    prev = "no"
 
     #print questionstr,answer
     print answer
