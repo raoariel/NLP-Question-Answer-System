@@ -1,9 +1,19 @@
 # NLP-Question-Answer-System
 ####Initial Plan for 11-411 Final Project
 
+Week 11 Plans
+---------------------------------
+* Reminder: Final Video (8 mins)
+* Will be over Spring Carnival
+
+Week 10 Plans
+---------------------------------
+* Final Project due April 14, midnight
+
 Week 9 Plans
 ---------------------------------
 * Reminder: Prepare for Dry Run
+* Dry Run due April 7, before class
 
 Week 8 Plans
 ---------------------------------
