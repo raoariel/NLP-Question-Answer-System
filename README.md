@@ -1,5 +1,9 @@
 # NLP-Question-Answer-System
-####Initial Plan for 11-411 Final Project
+####Plan for 11-411 Final Project
+
+Week 12 Plans
+---------------------------------
+* 100 Generated Questions Review
 
 Week 11 Plans
 ---------------------------------
